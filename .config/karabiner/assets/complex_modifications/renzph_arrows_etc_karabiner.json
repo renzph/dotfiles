@@ -396,6 +396,52 @@
           ]
         }
       ]
+    },
+    {
+      "description": "mod1+space to ctrl+b",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "spacebar",
+            "modifiers": {
+              "mandatory": [],
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "n",
+              "modifiers": ["left_control"] 
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "my_modifier_1",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "non_us_backslash",
+            "modifiers": {
+              "optional": [
+                "any"
+              ]
+            }
+          },
+          "to": [
+            {
+              "key_code": "grave_accent_and_tilde"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
