@@ -111,6 +111,9 @@ vim.opt.mouse = "a"
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldenable = false
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -274,49 +277,6 @@ require("lazy").setup({
 			vim.g.vimtex_view_method = "skim"
 		end,
 	},
-	{
-		"benlubas/molten-nvim",
-		version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-		dependencies = { "3rd/image.nvim" },
-		build = ":UpdateRemotePlugins",
-		init = function()
-			-- these are examples, not defaults. Please see the readme
-			vim.g.molten_image_provider = "image.nvim"
-			vim.g.molten_output_win_max_height = 20
-		end,
-	},
-	{
-		-- see the image.nvim readme for more information about configuring this plugin
-		"3rd/image.nvim",
-		opts = {
-			backend = "kitty", -- whatever backend you would like to use
-			build = false,
-			processor = "magick_cli",
-			max_width = 900,
-			image_options = {
-				width = 800, -- Width in pixels
-				height = 600, -- Height in pixels
-			},
-			max_height = 336,
-			max_height_window_percentage = math.huge,
-			max_width_window_percentage = math.huge,
-			window_overlap_clear_enabled = true, -- toggles images when windows are overlapped
-			window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-		},
-	},
-
-	-- NOTE: Plugins can also be added by using a table,
-	-- with the first argument being the link and the following
-	-- keys can be used to configure plugin behavior/loading/etc.
-	--
-	-- Use `opts = {}` to force a plugin to be loaded.
-	--
-
-	-- Here is a more advanced example where we pass configuration
-	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-	--    require('gitsigns').setup({ ... })
-	--
-	-- See `:help gitsigns` to understand what the configuration keys do
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -404,8 +364,59 @@ require("lazy").setup({
 	-- The dependencies are proper plugin specifications as well - anything
 	-- you do for a plugin at the top level, you can do for a dependency.
 	--
-	-- Use the `dependencies` key to specify the dependencies of a particular plugin
-
+	{
+		"theprimeagen/harpoon",
+		branch = "harpoon2",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("harpoon"):setup()
+		end,
+		keys = {
+			{
+				"<leader>a",
+				function()
+					require("harpoon"):list():add()
+				end,
+				desc = "harpoon file",
+			},
+			{
+				"<C-e>",
+				function()
+					local harpoon = require("harpoon")
+					harpoon.ui:toggle_quick_menu(harpoon:list())
+				end,
+				desc = "harpoon quick menu",
+			},
+			{
+				"<C-h>",
+				function()
+					require("harpoon"):list():select(1)
+				end,
+				desc = "harpoon to file 1",
+			},
+			{
+				"<C-t>",
+				function()
+					require("harpoon"):list():select(2)
+				end,
+				desc = "harpoon to file 2",
+			},
+			{
+				"<C-n>",
+				function()
+					require("harpoon"):list():select(3)
+				end,
+				desc = "harpoon to file 3",
+			},
+			{
+				"<C-s>",
+				function()
+					require("harpoon"):list():select(4)
+				end,
+				desc = "harpoon to file 4",
+			},
+		},
+	}, -- Use the `dependencies` key to specify the dependencies of a particular plugin
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
@@ -453,15 +464,6 @@ require("lazy").setup({
 			-- [[ Configure Telescope ]]
 			-- See `:help telescope` and `:help telescope.setup()`
 			require("telescope").setup({
-				-- You can put your default mappings / updates / etc. in here
-				--  All the info you're looking for is in `:help telescope.setup()`
-				--
-				-- defaults = {
-				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-				--   },
-				-- },
-				-- pickers = {}
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -508,6 +510,31 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
+
+			local conf = require("telescope.config").values
+			local harpoon = require("harpoon")
+
+			local function toggle_telescope(harpoon_files)
+				local file_paths = {}
+				for _, item in ipairs(harpoon_files.items) do
+					table.insert(file_paths, item.value)
+				end
+
+				require("telescope.pickers")
+					.new({}, {
+						prompt_title = "Harpoon",
+						finder = require("telescope.finders").new_table({
+							results = file_paths,
+						}),
+						previewer = conf.file_previewer({}),
+						sorter = conf.generic_sorter({}),
+					})
+					:find()
+			end
+
+			vim.keymap.set("n", "<C-e>", function()
+				toggle_telescope(harpoon:list())
+			end, { desc = "Open harpoon window" })
 		end,
 	},
 
