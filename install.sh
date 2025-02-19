@@ -72,4 +72,23 @@ for ((i=0; i<${#fonts[@]}; i+=2)); do
 done
 
 
+
+#!/bin/bash
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Detected macOS, installing fzf using Homebrew..."
+    brew install fzf stow
+elif [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" == "ubuntu" ]]; then
+        echo "Detected Ubuntu, installing fzf using apt..."
+        sudo apt update && sudo apt install -y fzf stow
+    else
+        echo "Unsupported Linux distribution: $ID"
+        exit 1
+    fi
+else
+    echo "Unsupported OS: $OSTYPE"
+    exit 1
+fi
+
 stow . 
