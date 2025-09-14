@@ -352,6 +352,14 @@
                             "to": [{ "key_code": "grave_accent_and_tilde" }]
                         }
                     ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "product_id": 18804,
+                        "vendor_id": 12951
+                    },
+                    "ignore_vendor_events": true
                 }
             ],
             "name": "Default profile",
@@ -359,7 +367,7 @@
             "simple_modifications": [
                 {
                     "from": { "key_code": "caps_lock" },
-                    "to": [{ "key_code": "keypad_slash" }]
+                    "to": [{ "key_code": "left_command" }]
                 }
             ],
             "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
