@@ -1,4 +1,5 @@
 #!/bin/bash
+brew install neovim tmux stow
 
 if [ -d "$HOME/.oh-my-zsh/" ]; then
     echo "oh-my-zsh is already installed as ~/.oh-my-zsh already exists"
