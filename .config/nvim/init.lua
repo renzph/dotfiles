@@ -555,6 +555,9 @@ require("lazy").setup({
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
+		cond = function()
+			return not vim.g.vscode
+		end,
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
@@ -726,9 +729,9 @@ require("lazy").setup({
 				-- rust_analyzer = {},
 				basedpyright = {
 					capabilities = (function()
-						local capabilities = vim.lsp.protocol.make_client_capabilities()
+						local capabilities_ = vim.lsp.protocol.make_client_capabilities()
 						capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
-						return capabilities
+						return capabilities_
 					end)(),
 					settings = {
 						python = {
@@ -784,6 +787,8 @@ require("lazy").setup({
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
+				cond = false,
+				opts = { servers = { pyright = not vim.env.VSCODE_NEOVIM and {} or nil } },
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -1037,6 +1042,7 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
+				"python",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
@@ -1047,6 +1053,12 @@ require("lazy").setup({
 				--  the list of additional_vim_regex_highlighting and disabled languages for indent.
 				additional_vim_regex_highlighting = { "ruby" },
 			},
+			select = {
+				enable = true,
+				lookahead = true,
+				keymaps = { ["af"] = "@function.outer", ["if"] = "@function.inner" },
+			},
+			selection_modes = { ["@function.outer"] = "V" },
 			indent = { enable = true, disable = { "ruby" } },
 			incremental_selection = {
 				enable = true,
