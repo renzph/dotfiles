@@ -1,1 +1,3 @@
-**/.claude/settings.local.json
+.env
+devo-*
+settings.local.json
