@@ -76,7 +76,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions tmux)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -115,5 +115,9 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -r '/Users/philipp/.opam/opam-init/init.zsh' ]] || source '/Users/philipp/.opam/opam-init/init.zsh' > /dev/null 2> /dev/null
 # END opam configuration
 
-source $HOME/.cargo/env
+export PATH="/opt/homebrew/bin:$PATH" 
 
+. "$HOME/.local/bin/env"
+export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
