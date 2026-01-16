@@ -16,3 +16,5 @@ email = renz.ph@gmail.com
 	st = status
 	ros = rebase origin/staging
 
+[push]
+	autoSetupRemote = true

@@ -1,3 +1,5 @@
 .env
 devo-*
 settings.local.json
+*worktree*
+pyrefly.toml

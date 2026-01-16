@@ -1,0 +1,6 @@
+# linear cli
+# https://github.com/schpet/linear-cli
+
+workspace = "reactwise"
+team_id = "RW"
+issue_sort = "manual"
