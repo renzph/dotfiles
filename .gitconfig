@@ -18,3 +18,5 @@ email = renz.ph@gmail.com
 
 [push]
 	autoSetupRemote = true
+[log]
+	date = local

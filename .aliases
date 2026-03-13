@@ -1,0 +1,1 @@
+alias jjll="watch -n 0.1 --color jj --ignore-working-copy log --no-pager --color=always"

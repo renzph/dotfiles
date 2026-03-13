@@ -3,3 +3,8 @@ devo-*
 settings.local.json
 *worktree*
 pyrefly.toml
+*memray*
+.testmondata
+
+*.svg
+*.dot

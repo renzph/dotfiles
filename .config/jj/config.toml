@@ -1,5 +1,12 @@
 #:schema https://jj-vcs.github.io/jj/latest/config-schema.json
+[ui]
+editor = "nvim"
+merge-editor = ":builtin"
+
 
 [user]
 name = "Philipp Renz"
-email = "renz.ph@gmail.com"
+email = "philipp@reactwise.com" 
+
+[aliases]
+spr = ["util", "exec", "--", "jj-spr"]

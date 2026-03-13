@@ -2,3 +2,5 @@
 .config/karabiner/automatic_backups
 .config/zed/prompts
 .config/btop
+.config/github-copilot
+.config/jj/repos/

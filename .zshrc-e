@@ -121,10 +121,3 @@ export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
-
-[ -f "/Users/philipp/.ghcup/env" ] && . "/Users/philipp/.ghcup/env" # ghcup-env
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/philipp/.lmstudio/bin"
-# End of LM Studio CLI section
-
-source ~/.aliases
