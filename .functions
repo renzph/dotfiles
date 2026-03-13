@@ -1,0 +1,27 @@
+jjll() {
+  local repo_root
+  repo_root=$(pwd)
+  
+  # Traverse up until .jj/ found
+  while [[ ! -d "$repo_root/.jj" ]]; do
+    if [[ "$repo_root" == "/" ]]; then
+      echo "❌ No jj repo found" >&2
+      return 1
+    fi
+    repo_root=$(dirname "$repo_root")
+  done
+  
+  echo "🟢 Watching $repo_root/.jj/repo/op_heads/heads"
+  
+  cd "$repo_root" || return 1
+  watchexec \
+    --quiet \
+    --clear \
+    --restart \
+    --watch="${repo_root}/.jj/repo/op_heads/heads" \
+    --ignore-nothing \
+    --wrap-process=none \
+    -- \
+    jj --ignore-working-copy log
+}
+
