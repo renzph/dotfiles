@@ -10,3 +10,11 @@ email = "philipp@reactwise.com"
 
 [aliases]
 spr = ["util", "exec", "--", "jj-spr"]
+
+[git]
+private-commits = "description(glob-i:'wip:*') | description(glob-i:'private:*')"
+
+[gg.ui]
+recent-workspaces = ["/Users/philipp/reactwise/ReactWise"]
+
+
