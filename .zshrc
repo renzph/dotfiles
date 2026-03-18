@@ -128,3 +128,4 @@ export PATH="$PATH:/Users/philipp/.lmstudio/bin"
 # End of LM Studio CLI section
 
 source ~/.aliases
+source ~/.functions 
