@@ -1,27 +1,34 @@
-jjll() {
-  local repo_root
-  repo_root=$(pwd)
-  
-  # Traverse up until .jj/ found
-  while [[ ! -d "$repo_root/.jj" ]]; do
-    if [[ "$repo_root" == "/" ]]; then
-      echo "❌ No jj repo found" >&2
-      return 1
-    fi
-    repo_root=$(dirname "$repo_root")
-  done
-  
-  echo "🟢 Watching $repo_root/.jj/repo/op_heads/heads"
-  
-  cd "$repo_root" || return 1
-  watchexec \
-    --quiet \
-    --clear \
-    --restart \
-    --watch="${repo_root}/.jj/repo/op_heads/heads" \
-    --ignore-nothing \
-    --wrap-process=none \
-    -- \
-    jj --ignore-working-copy log
+jjll () {
+      local repo_root
+      repo_root=$(pwd)
+      while [[ ! -e "$repo_root/.jj" ]]
+      do
+          if [[ "$repo_root" == "/" ]]
+          then
+              echo "❌ No jj repo found" >&2
+              return 1
+          fi
+          repo_root=$(dirname "$repo_root")
+      done
+
+      # In a workspace, .jj/repo is a file containing the path to the main
+      # repo's .jj/repo directory. In the main repo it's a directory itself.
+      local jj_repo_dir
+      if [[ -f "$repo_root/.jj/repo" ]]
+      then
+          jj_repo_dir=$(<"$repo_root/.jj/repo")
+          # Resolve relative paths against .jj/
+          if [[ "$jj_repo_dir" != /* ]]
+          then
+              jj_repo_dir="$repo_root/.jj/$jj_repo_dir"
+          fi
+      else
+          jj_repo_dir="$repo_root/.jj/repo"
+      fi
+
+      local watch_path="$jj_repo_dir/op_heads/heads"
+      echo "🟢 Watching $watch_path"
+      cd "$repo_root" || return 1
+      watchexec --quiet --clear --restart --watch="$watch_path" --ignore-nothing --wrap-process=none -- jj --ignore-working-copy log
 }
 
