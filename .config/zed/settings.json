@@ -7,6 +7,26 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "helix_mode": true,
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "agent": {
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "right"
+  },
   "tab_bar": {
     "show": true,
   },
@@ -17,6 +37,7 @@
     },
   },
   "project_panel": {
+    "dock": "right",
     "show_diagnostics": "all",
   },
   "tabs": {
@@ -26,15 +47,11 @@
   },
   "diagnostics": { "inline": { "enabled": true } },
   "diagnostics_max_severity": null,
-  "vim_mode": true,
+  "vim_mode": false,
   "base_keymap": "VSCode",
   "ui_font_size": 14.0,
   "buffer_font_size": 12.0,
-  "theme": {
-    "mode": "system",
-    "light": "Tokyo Night Storm",
-    "dark": "One Dark",
-  },
+  "theme": "Tokyo Night",
   "inlay_hints": {
     "enabled": true,
     "show_type_hints": true,
