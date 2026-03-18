@@ -4,3 +4,7 @@
 .config/btop
 .config/github-copilot
 .config/jj/repos/
+.claude/*
+!.claude/settings.json
+!.claude/hooks
+!.claude/hooks/**
