@@ -1,8 +1,18 @@
 #:schema https://jj-vcs.github.io/jj/latest/config-schema.json
 [ui]
 editor = "nvim"
-merge-editor = ":builtin"
+merge-editor = "vscode"
+# ui.diff.tool = ["difft", "--color=always", "$left", "$right"]
+# pager = "delta"
 
+[[--scope]]
+--when.commands = ["diff", "show"]
+[--scope.ui]
+pager = ["delta", "--paging=always"]
+diff-formatter = ":git"
+
+# [ui.diff]
+# format = "git"
 
 [user]
 name = "Philipp Renz"
