@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: claudews <workspace-name>" >&2
+    exit 1
+fi
+
+ws="$1"
+worktree="$HOME/.claude/worktrees/$ws"
+
+if [[ -z "${TMUX:-}" ]]; then
+    echo "Error: not inside a tmux session" >&2
+    exit 1
+fi
+
+if [[ -d "$worktree" ]]; then
+    win_id=$(tmux new-window -P -F '#{window_id}' -n "$ws" -c "$worktree")
+    claude_cmd="claude"
+    jjll_cmd="jjll"
+    term_cmd=""
+    right_cwd=("-c" "$worktree")
+else
+    win_id=$(tmux new-window -P -F '#{window_id}' -n "$ws")
+    claude_cmd="claude --worktree $ws"
+    jjll_cmd="until [ -d $worktree ]; do sleep 1; done && cd $worktree && jjll"
+    term_cmd="until [ -d $worktree ]; do sleep 1; done && cd $worktree && clear"
+    right_cwd=()
+fi
+left=$(tmux display-message -p -t "$win_id" '#{pane_id}')
+
+tmux send-keys -t "$left" "$claude_cmd" C-m
+
+right_top=$(tmux split-window -h -t "$left" "${right_cwd[@]}" -P -F '#{pane_id}')
+tmux send-keys -t "$right_top" "$jjll_cmd" C-m
+
+right_bot=$(tmux split-window -v -t "$right_top" "${right_cwd[@]}" -P -F '#{pane_id}')
+[[ -n "$term_cmd" ]] && tmux send-keys -t "$right_bot" "$term_cmd" C-m
+
+tmux select-pane -t "$left"
